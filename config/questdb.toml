@@ -1,0 +1,61 @@
+# pfc-archiver-questdb — QuestDB Configuration Example
+# ======================================================
+# Copy this file, adjust values, then run:
+#   python pfc_archiver_questdb.py --config config/questdb.toml --dry-run
+#   python pfc_archiver_questdb.py --config config/questdb.toml --once
+#   python pfc_archiver_questdb.py --config config/questdb.toml   # daemon mode
+
+# ---------------------------------------------------------------------------
+# Source database
+# ---------------------------------------------------------------------------
+[db]
+db_type   = "questdb"
+host      = "localhost"
+port      = 8812                 # QuestDB PostgreSQL wire port (NOT 5432)
+user      = "admin"              # QuestDB default user
+password  = "quest"              # QuestDB default password
+dbname    = "qdb"                # QuestDB default database
+
+table     = "logs"               # table to archive (no schema prefix)
+ts_column = "timestamp"          # designated timestamp column
+
+# Note: QuestDB does not use schemas. Reference tables by name only.
+
+# ---------------------------------------------------------------------------
+# Archive settings
+# ---------------------------------------------------------------------------
+[archive]
+# Data older than retention_days will be archived + (optionally) deleted
+retention_days         = 30
+
+# Partition size: each archive file covers partition_days of data
+# Smaller = more files, more granular recovery. Recommended: 1 or 7.
+partition_days         = 1
+
+# Archive destination:
+#   S3:    "s3://my-bucket/cold-storage/"
+#   Local: "/mnt/nas/pfc-archives/"  or  "./local-archives/"
+output_dir             = "./local-archives/"
+
+# S3 options (only used if output_dir starts with s3://)
+# s3_region     = "eu-central-1"
+# s3_endpoint   = ""             # leave empty for AWS, or MinIO URL
+# s3_access_key = ""             # leave empty to use env vars / IAM role
+# s3_secret_key = ""
+
+# Verify archive row count == exported row count before deleting from DB
+verify                 = true
+
+# DELETE archived rows from source DB after successful verify
+# Requires QuestDB 7.3.0+. Set to false first to test without data loss risk!
+delete_after_archive   = false   # ← change to true when confident
+
+# Directory for JSON run logs
+log_dir                = "./archive_logs/"
+
+# ---------------------------------------------------------------------------
+# Daemon settings (ignored when --once is used)
+# ---------------------------------------------------------------------------
+[daemon]
+# How often to check for new archivable partitions (in seconds)
+interval_seconds = 3600          # 1 hour

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.pfc
+*.pfc.bidx
+*.pfc.idx
+*.pfc.tmp
+test-archives/
+.pytest_cache/
+.deepeval/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.log
+archive_logs/
