@@ -62,6 +62,8 @@ curl -L https://github.com/ImpossibleForge/pfc-jsonl/releases/latest/download/pf
      -o /usr/local/bin/pfc_jsonl && chmod +x /usr/local/bin/pfc_jsonl
 ```
 
+> **License note:** This tool requires the `pfc_jsonl` binary. `pfc_jsonl` is free for personal and open-source use — commercial use requires a separate license. See [pfc-jsonl](https://github.com/ImpossibleForge/pfc-jsonl) for details.
+
 > **macOS Intel (x64):** Binary coming soon.
 > **Windows:** No native binary. Use WSL2 or a Linux machine.
 
