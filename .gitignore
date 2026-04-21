@@ -14,3 +14,6 @@ build/
 venv/
 *.log
 archive_logs/
+.env
+.pfc_buffer.jsonl
+.pfc_buffer.compressing
