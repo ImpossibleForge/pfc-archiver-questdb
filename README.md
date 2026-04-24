@@ -272,6 +272,6 @@ After confirming your archives are accessible via DuckDB, set `delete_after_arch
 PFC-Archiver-QuestDB is an independent open-source project and is not affiliated with, endorsed by, or associated with QuestDB Ltd.
 ## License
 
-MIT — see [LICENSE](LICENSE).
+pfc-archiver-questdb (this repository) is released under the MIT License — see [LICENSE](LICENSE).
 
-*Built by [ImpossibleForge](https://github.com/ImpossibleForge)*
+The PFC-JSONL binary (`pfc_jsonl`) is proprietary software — free for personal and open-source use. Commercial use requires a license: [info@impossibleforge.com](mailto:info@impossibleforge.com)
