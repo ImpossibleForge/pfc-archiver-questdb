@@ -259,6 +259,7 @@ After confirming your archives are accessible via DuckDB, set `delete_after_arch
 | [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) | One-shot JSONL export and archive conversion |
 | [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) | HTTP REST server for PFC archives |
 | [pfc-vector](https://github.com/ImpossibleForge/pfc-vector) | High-performance Rust ingest daemon for Vector.dev and Telegraf |
+| [pfc-otel-collector](https://github.com/ImpossibleForge/pfc-otel-collector) | OpenTelemetry OTLP/HTTP log exporter |
 
 ---
 
