@@ -264,6 +264,12 @@ After confirming your archives are accessible via DuckDB, set `delete_after_arch
 
 ---
 
+
+---
+
+## Disclaimer
+
+PFC-Archiver-QuestDB is an independent open-source project and is not affiliated with, endorsed by, or associated with QuestDB Ltd.
 ## License
 
 MIT — see [LICENSE](LICENSE).
