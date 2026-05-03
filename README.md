@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![PFC-JSONL](https://img.shields.io/badge/PFC--JSONL-v3.4-green.svg)](https://github.com/ImpossibleForge/pfc-jsonl)
-[![Version](https://img.shields.io/badge/pfc--archiver--questdb-v0.1.0-brightgreen.svg)](https://github.com/ImpossibleForge/pfc-archiver-questdb/releases)
+[![Version](https://img.shields.io/badge/pfc--archiver--questdb-v0.1.1-brightgreen.svg)](https://github.com/ImpossibleForge/pfc-archiver-questdb/releases)
 
 A standalone daemon that runs alongside QuestDB, watches for data older than a configurable retention window, compresses it to PFC format, and writes it to local storage or S3 — automatically.
 
