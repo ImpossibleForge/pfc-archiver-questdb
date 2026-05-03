@@ -14,3 +14,7 @@ build/
 venv/
 *.log
 archive_logs/
+
+# PFC buffer files
+.pfc_buffer.jsonl
+.pfc_buffer.compressing
