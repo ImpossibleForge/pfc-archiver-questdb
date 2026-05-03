@@ -247,20 +247,19 @@ After confirming your archives are accessible via DuckDB, set `delete_after_arch
 
 ---
 
-## Related Projects
+## Part of the PFC Ecosystem
 
-| Project | Description |
-|---------|-------------|
-| [pfc-jsonl](https://github.com/ImpossibleForge/pfc-jsonl) | Core binary — compress, decompress, query |
-| [pfc-duckdb](https://github.com/ImpossibleForge/pfc-duckdb) | DuckDB Community Extension (`INSTALL pfc FROM community`) |
-| [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) | Archive daemon for CrateDB |
-| [pfc-migrate](https://github.com/ImpossibleForge/pfc-migrate) | One-shot JSONL export and archive conversion |
-| [pfc-gateway](https://github.com/ImpossibleForge/pfc-gateway) | HTTP REST server for PFC archives |
+**[→ View all PFC tools & integrations](https://github.com/ImpossibleForge/pfc-jsonl#ecosystem)**
+
+| Direct integration | Why |
+|---|---|
+| [pfc-export-questdb](https://github.com/ImpossibleForge/pfc-export-questdb) | Same DB, different mode — exporter is one-shot CLI; archiver runs as a continuous daemon |
+| [pfc-archiver-cratedb](https://github.com/ImpossibleForge/pfc-archiver-cratedb) | Same concept for CrateDB |
 
 ---
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+pfc-archiver-questdb (this repository) is released under the MIT License — see [LICENSE](LICENSE).
 
-*Built by [ImpossibleForge](https://github.com/ImpossibleForge)*
+The PFC-JSONL binary (`pfc_jsonl`) is proprietary software — free for personal and open-source use. Commercial use requires a license: [info@impossibleforge.com](mailto:info@impossibleforge.com)

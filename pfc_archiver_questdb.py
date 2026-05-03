@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-pfc-archiver-questdb v0.1.0 — Autonomous cold partition archive daemon for QuestDB
+pfc-archiver-questdb v0.1.1 — Autonomous cold partition archive daemon for QuestDB
 ====================================================================================
 
 Watches a QuestDB instance for data older than a configurable retention window,
@@ -28,7 +28,7 @@ Usage:
   python pfc_archiver_questdb.py --config config/questdb.toml --once
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import argparse
 import json
@@ -399,7 +399,8 @@ def verify_archive(local_pfc: Path, expected_rows: int, pfc_binary: str) -> bool
                 f"Decompression failed during verify: {proc.stderr.strip()}"
             )
 
-        actual_rows = sum(1 for _ in open(tmp_out, encoding="utf-8"))
+        with open(tmp_out, encoding="utf-8") as fv:
+            actual_rows = sum(1 for _ in fv)
 
     if actual_rows != expected_rows:
         raise RuntimeError(
@@ -422,41 +423,39 @@ def delete_partition(
     dry_run: bool = False,
 ):
     """
-    Delete the archived time range from the source database.
+    Delete the archived time range from QuestDB.
 
-    QuestDB: uses DELETE WHERE ts_column >= from_ts AND ts_column < to_ts.
-    Deletion only runs after a successful row-count verify.
+    QuestDB does NOT support row-level DELETE via the PostgreSQL wire protocol.
+    Instead, this uses ALTER TABLE DROP PARTITION — which is the correct and
+    efficient approach for a time-series database. It removes the entire
+    day-level partition file atomically.
 
-    Note: QuestDB DELETE support requires version 7.3.0+.
+    Requires: the table must be partitioned BY DAY (the archiver's default).
+    The archiver archives one day at a time, so from_ts.date() == the partition date.
     """
     table  = db_cfg["table"]
     ts_col = db_cfg["ts_column"]
 
-    sql = (
-        f'DELETE FROM "{table}" '
-        f'WHERE "{ts_col}" >= %s AND "{ts_col}" < %s'
-    )
+    # QuestDB partition date = from_ts date (archiver always works day-by-day)
+    partition_date = from_ts.date().isoformat()
+    sql = f"ALTER TABLE {table} DROP PARTITION WHERE {ts_col} = '{partition_date}'"
 
     if dry_run:
         log.info(
-            f"  [DRY-RUN] would DELETE: {from_ts.date()} → {to_ts.date()} "
+            f"  [DRY-RUN] would DROP PARTITION {partition_date} "
             f'from "{table}"'
         )
         return
 
-    log.info(f'  Deleting {from_ts.date()} → {to_ts.date()} from "{table}" ...')
+    log.info(f'  Dropping partition {partition_date} from "{table}" ...')
 
     conn = _connect(db_cfg)
     try:
+        conn.autocommit = True
         cur = conn.cursor()
-        cur.execute(sql, (from_ts.isoformat(), to_ts.isoformat()))
-        deleted = cur.rowcount
-        conn.commit()
+        cur.execute(sql)
         cur.close()
-        if deleted >= 0:
-            log.info(f"  ✓ Deleted {deleted:,} rows from source DB")
-        else:
-            log.info("  ✓ Delete executed (QuestDB may not report exact rowcount)")
+        log.info(f"  ✓ Partition {partition_date} dropped from source DB")
     finally:
         conn.close()
 
