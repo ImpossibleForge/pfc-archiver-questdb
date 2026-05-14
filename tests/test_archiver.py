@@ -207,7 +207,9 @@ class TestNoSchemaQueries(unittest.TestCase):
 
         executed_sql = mock_cur.execute.call_args[0][0]
         self.assertNotIn("doc", executed_sql)
-        self.assertIn('"events"', executed_sql)
+        # QuestDB ALTER TABLE uses unquoted table names
+        self.assertIn("events", executed_sql)
+        self.assertIn("DROP PARTITION", executed_sql)
 
 
 # ===========================================================================
@@ -542,11 +544,12 @@ class TestDeletePartition(unittest.TestCase):
 
         delete_partition(db_cfg, from_ts, to_ts)
 
-        # Verify correct params passed to execute
-        call_args = mock_cur.execute.call_args
-        params    = call_args[0][1]
-        self.assertEqual(params[0], from_ts.isoformat())
-        self.assertEqual(params[1], to_ts.isoformat())
+        # QuestDB ALTER TABLE uses string formatting (no psycopg2 params) — verify SQL content
+        executed_sql = mock_cur.execute.call_args[0][0]
+        partition_date = from_ts.date().isoformat()   # '2026-03-01'
+        self.assertIn(partition_date, executed_sql)
+        self.assertIn("DROP PARTITION", executed_sql)
+        self.assertIn("events", executed_sql)
 
 
 # ===========================================================================
